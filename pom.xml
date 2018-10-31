@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.youe.cd.apptest</groupId>
+  <artifactId>appiumtestdemo</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>appiumtestdemo</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+
+    <!--<docker.maintainer>maintainertest</docker.maintainer>
+    <docker.imageName>appiumtestdemo</docker.imageName>-->
+    <!--<docker.registry>192.168.126.128:5000</docker.registry>-->
+    <docker.registry>192.168.126.128/library</docker.registry>
+  </properties>
+
+  <distributionManagement>
+    <!--<repository>
+        <id>releases</id>
+        <name>User Project Release</name>
+        <url>http://172.16.0.249:8081/nexus/content/repositories/releases/</url>
+    </repository>
+    <snapshotRepository>
+        <id>snapshots</id>
+        <name>User Project SNAPSHOTS</name>
+        <url>http://172.16.0.249:8081/nexus/content/repositories/snapshots/</url>
+    </snapshotRepository>-->
+    <site>
+      <id>website</id>
+      <url>scp://webhost.company.com/www/website</url>
+    </site>
+  </distributionManagement>
+
+  <build>
+    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+      <plugins>
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+        <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.0.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.7.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.20.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.0.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.5.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.8.2</version>
+        </plugin>
+
+        <plugin>
+          <groupId>com.spotify</groupId>
+          <artifactId>docker-maven-plugin</artifactId>
+          <version>0.4.3</version>
+          <configuration>
+            <!-- 私有仓库配置，需在maven的配置文件settings.xml配置serverId对应的服务地址,如registry/harbor的用户名及密码等服务器连接信息 -->
+            <serverId>docker-hub</serverId>
+            <registryUrl>http://${docker.registry}</registryUrl>
+            <dockerHost>http://192.168.126.128:2375</dockerHost>
+            <!--<dockerCertPath>C:\Users\admin\.docker\machine\machines\manager</dockerCertPath>-->
+            <imageName>${docker.registry}/${project.artifactId}:${project.version}</imageName>
+            <!--<dockerDirectory>src/main/docker</dockerDirectory>-->
+            <baseImage>java:8</baseImage>
+            <!--<maintainer>${docker.maintainer}</maintainer>-->
+            <!--<volumes>/tmp</volumes>-->
+            <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+            <resources>
+              <resource>
+                <targetPath>/</targetPath>
+                <directory>${project.build.directory}</directory>
+                <include>${project.build.finalName}.jar</include>
+              </resource>
+            </resources>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <dependencies>
+    <!--<dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>-->
+
+    <!--注意：使用appium时就不用selenium-server了，否则依赖包会冲突-->
+    <!--<dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-server</artifactId>
+      <version>3.5.3</version>
+    </dependency>-->
+
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>6.9.9</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.appium</groupId>
+      <artifactId>java-client</artifactId>
+      <version>5.0.0-BETA9</version>
+    </dependency>
+
+  </dependencies>
+
+</project>

@@ -12,13 +12,13 @@ import java.net.URL;
 
 public class AppTest 
 {
-    //@Test
+    @Test
     public void CalculatorTest()  throws MalformedURLException,InterruptedException {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("deviceName", "emulator-5554");
         capabilities.setCapability("automationName", "Appium");
         capabilities.setCapability("platformName", "Android");
-        capabilities.setCapability("platformVersion", "7.0");
+        capabilities.setCapability("platformVersion", "6.0");
         capabilities.setCapability("appPackage", "com.android.calculator2");
         capabilities.setCapability("appActivity", ".Calculator");
 
@@ -35,7 +35,7 @@ public class AppTest
         driver.findElement(By.id("com.android.calculator2:id/eq")).click();
         Thread.sleep(2000);
 
-        String result = driver.findElement(By.id("com.android.calculator2:id/result")).getText();
+        String result = driver.findElement(By.id("com.android.calculator2:id/formula")).getText();
         System.out.println("Getting result is: " + result);
 
         driver.quit();

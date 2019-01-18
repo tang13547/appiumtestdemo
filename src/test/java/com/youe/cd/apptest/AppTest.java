@@ -10,8 +10,7 @@ import org.testng.annotations.Test;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class AppTest 
-{
+public class AppTest {
     @Test
     public void CalculatorTest()  throws MalformedURLException,InterruptedException {
         DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -26,11 +25,19 @@ public class AppTest
 
         //Thread.sleep(3000);
 
-        driver.findElement(By.id("com.android.calculator2:id/digit_1")).click();
-        driver.findElement(By.id("com.android.calculator2:id/digit_5")).click();
+        //driver.findElement(By.id("com.android.calculator2:id/digit_1")).click();
+        //driver.findElement(By.name("1")).click(); //By.name()已移除，不可用
+        driver.findElement(By.xpath("//android.view.ViewGroup/android.widget.Button[7]")).click();
+        //driver.findElement(By.id("com.android.calculator2:id/digit_5")).click();
+        //driver.findElement(By.xpath("//android.widget.Button[@text='5']")).click();
+        driver.findElement(By.xpath("//android.widget.Button[contains(@text,'5')]")).click();
         driver.findElement(By.id("com.android.calculator2:id/digit_9")).click();
         driver.findElement(By.id("com.android.calculator2:id/del")).click();
-        driver.findElement(By.id("com.android.calculator2:id/op_add")).click();
+        //driver.findElement(By.id("com.android.calculator2:id/op_add")).click();
+        //driver.findElement(By.xpath("//android.widget.Button[@content-desc='plus']")).click();
+        //driver.findElementByAccessibilityId("plus").click(); //通过属性content-desc定位元素
+        //driver.findElementByAndroidUIAutomator("new UiSelector().text(\"+\")").click();
+        driver.findElementByAndroidUIAutomator("new UiSelector().description(\"plus\")").click(); //description()方法用的是content-desc属性
         driver.findElement(By.id("com.android.calculator2:id/digit_6")).click();
         driver.findElement(By.id("com.android.calculator2:id/eq")).click();
         Thread.sleep(2000);
